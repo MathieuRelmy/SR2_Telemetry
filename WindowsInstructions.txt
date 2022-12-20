@@ -1,4 +1,5 @@
-First off, you need to have Python 3.10 installed. Here's a quick tutorial on installing Python :
+First off, you need to have Python 3.10 installed.
+You can either install it in the Windows App Store or do the following :
 
 1. Go to the Python download page at https://www.python.org/downloads/
 2. Under the "Python Releases for Windows" section, click the link for the latest version of Python 3.
