@@ -1,6 +1,7 @@
 import socket
 import struct
 import sys
+from datetime import timedelta
 
 
 # Create a socket using the UDP protocol
@@ -21,7 +22,6 @@ class Packet:
     def __init__(self, data):
         """
               Initialize a Packet object with the given data.
-
               Parameters:
               - data (bytes): The raw data of the packet.
         """
@@ -31,10 +31,8 @@ class Packet:
     def get(self, num_bytes):
         """
                Get the next num_bytes bytes from the packet.
-
                Parameters:
                - num_bytes (int): The number of bytes to retrieve.
-
                 Returns:
                 - bytes: The requested bytes. If there are not enough bytes remaining in
                 the packet, all remaining bytes will be returned.
@@ -45,10 +43,8 @@ class Packet:
     def read(self, fmt):
         """
         Read all formatted values from the packet.
-
         Parameters:
         - fmt (str): The format string to use for parsing the data.
-
         Returns:
         - Union[None, Any]: A single value if only one value is specified in the
           format string, or a tuple of values if multiple values are specified.
@@ -64,10 +60,8 @@ class Packet:
     def read_all(self, fmt):
         """
         Read formatted values from the packet.
-
         Parameters:
         - fmt (str): The format string to use for parsing the data.
-
         Returns:
         - Tuple[Any]: A tuple of the parsed values.
         """
@@ -77,7 +71,6 @@ class Packet:
     def more(self):
         """
         Check if there is more data in the packet.
-
         Returns:
         - bool: True if there is more data, False otherwise.
         """
@@ -87,16 +80,21 @@ class Packet:
 def read_packet(dat):
     """
     Parse and process a packet of data.
-
     Parameters:
     - dat (bytes): The raw data of the packet.
-
     Returns:
     - None: The function does not return a value.
     """
     p = Packet(dat)
 
     message_type = p.read("B")
+
+    print("---")
+    if message_type == 1:
+        print("packet:")
+        timestamp = p.read("Q")
+        print("  timestamp: {0}".format(timedelta(milliseconds=timestamp)))
+        print("  variables:")
 
     if message_type == 1:
         while p.more:
@@ -111,13 +109,14 @@ def read_packet(dat):
             else:
                 struct_format = TypeFormats[tp]
                 val = p.read(struct_format)
+                print("    {0}: {1}".format(name, val))
 
             if name == "Altitude":
                 unit = " M"
             elif name == "Speed":
                 unit = " M/S"
             elif name == "Heading":
-                unit = " °"
+                unit = " DEG"
             else:
                 unit = ""
 
