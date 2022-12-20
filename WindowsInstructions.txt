@@ -1,1 +1,0 @@
-First off, you need to have Python 3.10 installed.
