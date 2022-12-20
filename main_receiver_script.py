@@ -116,6 +116,8 @@ def read_packet(dat):
                 unit = " M"
             elif name == "Speed":
                 unit = " M/S"
+            elif name == "Heading":
+                unit = " °"
             else:
                 unit = ""
 
