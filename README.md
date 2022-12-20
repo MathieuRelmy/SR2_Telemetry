@@ -9,10 +9,11 @@ Main goal of this is to achieve something that looks like Telemachus, a KSP mod 
 
 
 
+Trello board link :
+https://trello.com/b/dDf4sUKZ/master-todo
 
 
-
-SR2LoggerPlus by sflanker, link here:
+SR2LoggerPlus by sflanker :
 https://www.simplerockets.com/Mods/View/64864/SR2LoggerPlus
 
 
