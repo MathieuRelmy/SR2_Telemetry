@@ -97,8 +97,10 @@ def read_packet(dat):
             with open(name + ".txt", "a") as f:
                 if name_choice == 'y':
                     f.write("{0}: {1}{2}\n".format(name, val, unit))
+                    f.truncate(0)
                 else:
                     f.write("{0}{1}\n".format(val, unit))
+                    f.truncate(0)
 
 
 sys.stderr.write("Starting Client...\n")
