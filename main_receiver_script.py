@@ -3,12 +3,10 @@ import struct
 import sys
 from datetime import timedelta
 
-
 # Create a socket using the UDP protocol
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # Bind the socket to an IP on a specified port number
 s.bind(("localhost", 2837))
-
 
 # Define the format strings for each data type
 TypeFormats = [
@@ -111,12 +109,18 @@ def read_packet(dat):
                 val = p.read(struct_format)
                 print("    {0}: {1}".format(name, val))
 
-            if name == "Altitude":
-                unit = " M"
-            elif name == "Speed":
-                unit = " M/S"
-            elif name == "Heading":
-                unit = " DEG"
+            # Prompt the user to enter whether they want units
+            print("Do you want units appended to the values of the variables? (y/n)")
+            unit_choice = input()
+
+            # Set the unit based on the user's choice
+            if unit_choice == 'y':
+                if name == "Altitude":
+                    unit = " M"
+                elif name == "Speed":
+                    unit = " M/S"
+                elif name == "Heading":
+                    unit = " DEG"
             else:
                 unit = ""
 
