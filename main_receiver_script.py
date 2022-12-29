@@ -10,6 +10,9 @@ s.bind(("localhost", 2837))
 
 print("Do you want units appended to the values of the variables? (y/n)")
 unit_choice = input()
+print("Do you want the name of the variable included in front of the value? (y/n)")
+name_choice = input()
+
 
 # Define the format strings for each data type
 TypeFormats = [
@@ -21,36 +24,17 @@ TypeFormats = [
 
 class Packet:
     def __init__(self, data):
-        """
-              Initialize a Packet object with the given data.
-              Parameters:
-              - data (bytes): The raw data of the packet.
-        """
+
         self.data = data
         self.pos = 0
 
     def get(self, num_bytes):
-        """
-               Get the next num_bytes bytes from the packet.
-               Parameters:
-               - num_bytes (int): The number of bytes to retrieve.
-                Returns:
-                - bytes: The requested bytes. If there are not enough bytes remaining in
-                the packet, all remaining bytes will be returned.
-        """
+
         self.pos += num_bytes
         return self.data[self.pos - num_bytes:self.pos]
 
     def read(self, fmt):
-        """
-        Read all formatted values from the packet.
-        Parameters:
-        - fmt (str): The format string to use for parsing the data.
-        Returns:
-        - Union[None, Any]: A single value if only one value is specified in the
-          format string, or a tuple of values if multiple values are specified.
-          Returns None if no values are read.
-        """
+
         v = self.read_all(fmt)
         if len(v) == 0:
             return None
@@ -59,33 +43,17 @@ class Packet:
         return v
 
     def read_all(self, fmt):
-        """
-        Read formatted values from the packet.
-        Parameters:
-        - fmt (str): The format string to use for parsing the data.
-        Returns:
-        - Tuple[Any]: A tuple of the parsed values.
-        """
+
         return struct.unpack(fmt, self.get(struct.calcsize(fmt)))
 
     @property
     def more(self):
-        """
-        Check if there is more data in the packet.
-        Returns:
-        - bool: True if there is more data, False otherwise.
-        """
+
         return self.pos < len(self.data)
 
 
 def read_packet(dat):
-    """
-    Parse and process a packet of data.
-    Parameters:
-    - dat (bytes): The raw data of the packet.
-    Returns:
-    - None: The function does not return a value.
-    """
+
     p = Packet(dat)
 
     message_type = p.read("B")
@@ -112,6 +80,9 @@ def read_packet(dat):
                 val = p.read(struct_format)
                 print("    {0}: {1}".format(name, val))
 
+            # Set the unit to an empty string
+            unit = ""
+
             # Set the unit based on the user's choice
             if unit_choice == 'y':
                 if name == "Altitude":
@@ -124,19 +95,14 @@ def read_packet(dat):
                 unit = ""
 
             with open(name + ".txt", "a") as f:
-                """
-                Open the file with the name 'name.txt' in append mode and write
-                the value (and unit, if it has one) of the current data item to the file.
-                """
-                f.truncate(0)
-                f.write("{0}: {1}{2}\n".format(name, val, unit))
+                if name_choice == 'y':
+                    f.write("{0}: {1}{2}\n".format(name, val, unit))
+                else:
+                    f.write("{0}{1}\n".format(val, unit))
 
 
 sys.stderr.write("Starting Client...\n")
 while 1:
-    """
-    Receive data packets from a server (up to a specified amount of bytes) and process them using the
-    read_packet function.
-    """
+
     d, a = s.recvfrom(2048)
     read_packet(d)
