@@ -1,0 +1,9 @@
+First off, you need to have Python 3.10 installed.
+You can either install it in the Windows App Store or do the following :
+
+1. Go to the Python download page at https://www.python.org/downloads/
+2. Under the "Python Releases for Windows" section, click the link for the latest version of Python 3.
+3. Click the "Download Windows x86-64 executable installer" link to download the Python installer.
+4. Once the download is complete, run the installer and follow the prompts to install Python.
+5. During the installation process, make sure to check the option to "Add Python 3.X to PATH" (where X is the version number of Python you are installing). This will ensure that Python is added to your system's environment variables, allowing you to run Python from the command line.
+6. Once the installation is complete, open a command prompt window and type "python" to launch the Python interpreter. You should see the Python command prompt, indicating that Python has been successfully installed and added to your system's environment variables.
